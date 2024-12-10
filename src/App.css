@@ -5,72 +5,106 @@
   box-sizing: border-box;
 }
 
-html, body {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Reset styles */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling during loading and transition */
+}
+
+
+
+/* Loader screen */
+#loader-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
-  overflow-y: hidden; /* Prevent vertical scrolling */
-}
-
-/* Background image and full-screen container */
-body {
-  background: url('../image.png') no-repeat center center fixed;
-  background-size: cover;
-  height: 100%;
-}
-
-/* Container for the countdown */
-.countdown-container {
-  position: absolute;
-  top: 55%; /* Move the countdown 55% down from the top */
-  left: 50%;
-  transform: translateX(-50%); /* Center horizontally */
-  width: 100%;
-  height: 80%; /* Ensure there's space around the countdown */
+  background-color: #6d2b1a; /* Background during loading */
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align items to the top */
-  color: white;
-  font-size: 1.5em;
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+  align-items: center;
+  z-index: 9999;
 }
 
-/* Countdown with jump effect and shining text */
-.countdown {
-  text-align: center;
-  padding: 8px;
-  border: 1.5px solid #c8144c; /* Red border around the text */
-  border-radius: 15px; /* Rounded corners for the border */
-  background: rgba(255, 255, 255, 0.3); /* Semi-transparent background */
-  color: #c8144c; /* Matching the border color */
-  font-weight: bold;
-  text-shadow: 0 0 10px rgba(200, 20, 76, 0.8), 0 0 20px rgba(200, 20, 76, 0.8), 0 0 30px rgba(200, 20, 76, 0.8);
-  animation: shiningText 1.5s infinite alternate, jumpText 0.5s ease-out 2.5s 1; /* Add jump animation with 2.5s delay */
+/* Circular loader */
+.loader {
+  /* width: 50px;
+  height: 50px; */
+  width: auto;
+  height: auto;
+  border-radius: 50%;
+  background-image: url("/public/timer.gif");
+  z-index: 10000;
 }
 
-/* Shining text animation */
-@keyframes shiningText {
+.hidden {
+  display: none;
+}
+
+@keyframes spin {
   0% {
-    text-shadow: 0 0 10px rgba(200, 20, 76, 0.8), 0 0 20px rgba(200, 20, 76, 0.8), 0 0 30px rgba(200, 20, 76, 0.8);
-  }
-  50% {
-    text-shadow: 0 0 20px rgba(200, 20, 76, 1), 0 0 30px rgba(200, 20, 76, 1), 0 0 40px rgba(200, 20, 76, 1);
+    transform: rotate(0deg);
   }
   100% {
-    text-shadow: 0 0 10px rgba(200, 20, 76, 0.8), 0 0 20px rgba(200, 20, 76, 0.8), 0 0 30px rgba(200, 20, 76, 0.8);
+    transform: rotate(360deg);
   }
 }
 
-/* Jump effect for the countdown text */
-@keyframes jumpText {
+/* Ripple mask */
+#ripple-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #f0f0f0;
+  z-index: 9998;
+  overflow: hidden;
+}
+
+#ripple-mask::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  background: #f2555b; /* Ripple color */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ripple-effect 2s ease-out forwards;
+}
+
+@keyframes ripple-effect {
   0% {
-    transform: translateY(0);
-  }
-  30% {
-    transform: translateY(-20px); /* Jump up */
-  }
-  60% {
-    transform: translateY(0); /* Go back to original position */
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
   }
   100% {
-    transform: translateY(0); /* Final position */
+    transform: translate(-50%, -50%) scale(100);
+    opacity: 0;
+  }
+}
+
+/* Main page content */
+.main-page {
+  position: relative; /* Ensure it's above the wave and loading screen */
+  opacity: 0; /* Start fully transparent */
+  animation: fade-in 1s ease-in-out 0s forwards; /* Fade in after wave animation ends */
+  z-index: 1002; /* Above all animations */
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import './App.css';
+import './mainpage.css';
+import Header from '../Header';
+import bgSvg from '../../../public/Desktop - 2.svg'
+
 
 function App() {
     const [timeRemaining, setTimeRemaining] = useState('');
@@ -28,8 +31,18 @@ function App() {
     }, []);
 
     return (
-        <div className="countdown-container">
-            <div className="countdown">{timeRemaining} {" "} to go !!</div>
+        <div className='mainpage'>
+            <div id="header-container">
+                <Header />
+            </div>
+            <div className='hero-section'>
+                <div className='bg-svg'>
+                    <img src={bgSvg} alt="background" />
+                </div>
+                <div className="countdown-container">
+                    <div className="countdown">{timeRemaining} {" "} to go !!</div>
+                </div>
+            </div>
         </div>
     );
 }
